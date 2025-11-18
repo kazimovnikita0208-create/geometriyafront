@@ -347,29 +347,29 @@ export default function PricesPage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <div className="sticky top-0 bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+              <h2 className="text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
                 <BookOpenIcon />
-                Правила пользования абонементом
+                <span className="truncate">Правила пользования</span>
               </h2>
               <button
                 onClick={() => setIsRulesModalOpen(false)}
-                className="text-purple-200 hover:text-white transition-colors"
+                className="text-purple-200 hover:text-white transition-colors flex-shrink-0"
               >
                 <XIcon />
               </button>
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
               {rules.map((rule, idx) => (
-                <div key={idx} className="bg-purple-800/30 rounded-xl p-6 border border-purple-500/20">
-                  <h3 className="text-lg font-bold text-white mb-4">
+                <div key={idx} className="bg-purple-800/30 rounded-xl p-4 sm:p-6 border border-purple-500/20">
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">
                     {rule.title}
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {rule.content.map((paragraph, pIdx) => (
-                      <p key={pIdx} className="text-purple-200/90 text-sm leading-relaxed">
+                      <p key={pIdx} className="text-purple-200/90 text-sm sm:text-base leading-relaxed">
                         {paragraph}
                       </p>
                     ))}
@@ -379,7 +379,7 @@ export default function PricesPage() {
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 bg-purple-900/95 backdrop-blur-xl border-t border-purple-500/30 px-6 py-4">
+            <div className="sticky bottom-0 bg-purple-900/95 backdrop-blur-xl border-t border-purple-500/30 px-4 sm:px-6 py-3 sm:py-4">
               <Button
                 variant="default"
                 className="w-full"
@@ -403,20 +403,20 @@ export default function PricesPage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-6 py-4 flex items-center justify-between rounded-t-2xl">
-              <h2 className="text-xl font-bold text-white">
+            <div className="bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between rounded-t-2xl">
+              <h2 className="text-lg sm:text-xl font-bold text-white">
                 Бронирование абонемента
               </h2>
               <button
                 onClick={() => setIsBookingModalOpen(false)}
-                className="text-purple-200 hover:text-white transition-colors"
+                className="text-purple-200 hover:text-white transition-colors flex-shrink-0"
               >
                 <XIcon />
               </button>
             </div>
 
             {/* Content */}
-            <form onSubmit={handleBookingSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleBookingSubmit} className="p-4 sm:p-6 space-y-4">
               {/* Выбранная категория */}
               <div className="bg-purple-800/30 rounded-lg p-4 border border-purple-500/20">
                 <p className="text-sm text-purple-200/70 mb-1">Выбранный тариф:</p>

@@ -234,27 +234,27 @@ export default function SchedulePage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <div className="sticky top-0 bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+              <h2 className="text-lg sm:text-2xl font-bold text-white flex items-center gap-2">
                 <CalendarIcon />
-                {selectedDirection.name}
+                <span className="truncate">{selectedDirection.name}</span>
               </h2>
               <button
                 onClick={() => setIsScheduleModalOpen(false)}
-                className="text-purple-200 hover:text-white transition-colors"
+                className="text-purple-200 hover:text-white transition-colors flex-shrink-0"
               >
                 <XIcon />
               </button>
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
               {mockSchedule.map((day, dayIdx) => (
-                <div key={dayIdx} className="bg-purple-800/30 rounded-xl p-4 border border-purple-500/20">
-                  <h3 className="text-lg font-bold text-white mb-4">
+                <div key={dayIdx} className="bg-purple-800/30 rounded-xl p-3 sm:p-4 border border-purple-500/20">
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">
                     {day.date}
                   </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                     {day.times.map((time, timeIdx) => (
                       <button
                         key={timeIdx}
@@ -262,7 +262,7 @@ export default function SchedulePage() {
                           alert(`Вы записались на ${selectedDirection.name} ${day.date} в ${time}`)
                           setIsScheduleModalOpen(false)
                         }}
-                        className="px-4 py-3 rounded-lg bg-purple-700/30 border border-purple-500/20 text-white font-medium hover:bg-purple-600/50 hover:border-purple-400/50 transition-all"
+                        className="px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-purple-700/30 border border-purple-500/20 text-white text-sm sm:text-base font-medium hover:bg-purple-600/50 hover:border-purple-400/50 transition-all active:scale-95"
                       >
                         {time}
                       </button>
@@ -273,7 +273,7 @@ export default function SchedulePage() {
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 bg-purple-900/95 backdrop-blur-xl border-t border-purple-500/30 px-6 py-4">
+            <div className="sticky bottom-0 bg-purple-900/95 backdrop-blur-xl border-t border-purple-500/30 px-4 sm:px-6 py-3 sm:py-4">
               <Button
                 variant="outline"
                 className="w-full"
