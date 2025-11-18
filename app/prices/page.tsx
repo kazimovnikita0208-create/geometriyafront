@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BeamsBackground } from '@/components/ui/beams-background'
 import { Button } from '@/components/ui/button'
@@ -26,6 +27,18 @@ const SparklesIcon = () => (
 const InfoIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const XIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+)
+
+const BookOpenIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
   </svg>
 )
 
@@ -83,8 +96,36 @@ const terms = [
   'Абонемент действует с момента первого посещения'
 ]
 
+// Правила пользования абонементом
+const rules = [
+  {
+    title: 'Что делать, если я заболела / ухожу в отпуск, командировку?',
+    content: [
+      'В случае больничного, отпуска или командировки вы можете «заморозить» абонемент, т.е. продлить его срок действия на срок до 2 недель.',
+      '«Заморозкой» занимается координатор групп. Чтобы воспользоваться опцией, просто напишите ему. «Заморозка» начнет действовать со следующего дня после вашего предупреждения.'
+    ]
+  },
+  {
+    title: 'Можно ли отменить запись разово?',
+    content: [
+      'Конечно! Причина не важна :) Если ваше занятие должно состояться вечером после 17:00, нужно выписаться не позже, чем за 4 часа до начала тренировки. В таком случае ваше место смогут занять другие желающие.',
+      'Если ваше занятие должно состояться в первой половине дня до 17:00, нужно выписаться не позже 21:00 предыдущего дня. К примеру: если вы записаны на занятие в воскресенье в 12:00, необходимо предупредить о своем отсутствии до 21:00 субботы.'
+    ]
+  },
+  {
+    title: 'Обязательно ли закреплять за собой место в группах?',
+    content: [
+      'Необязательно. У нас в студии действует два формата записи — «гибкая» и «автомат».',
+      'При «гибкой» записи можно записываться каждую неделю на свободные места в разные группы.',
+      'При «автомате» можно закрепить за собой место в определенных группах и не беспокоиться, что его заберут раньше вас.',
+      'Важно: если вы записываетесь «автоматом», нужно ходить регулярно. При пропуске занятия в группе более 3 недель подряд запись «автоматом» автоматически снимается.'
+    ]
+  }
+]
+
 export default function PricesPage() {
   const router = useRouter()
+  const [isRulesModalOpen, setIsRulesModalOpen] = useState(false)
 
   return (
     <BeamsBackground intensity="medium">
@@ -200,6 +241,18 @@ export default function PricesPage() {
             </div>
           </div>
 
+          {/* Кнопка Правила */}
+          <div className="text-center mb-8">
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => setIsRulesModalOpen(true)}
+            >
+              <BookOpenIcon />
+              Правила пользования абонементом
+            </Button>
+          </div>
+
           {/* Контакты */}
           <div className="text-center">
             <div className="inline-block bg-purple-900/40 backdrop-blur-xl rounded-2xl border border-purple-500/20 px-8 py-6">
@@ -220,6 +273,62 @@ export default function PricesPage() {
 
         </div>
       </div>
+
+      {/* Модальное окно с правилами */}
+      {isRulesModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setIsRulesModalOpen(false)}
+        >
+          <div 
+            className="bg-purple-900/95 backdrop-blur-xl rounded-2xl border border-purple-500/30 max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="sticky top-0 bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <BookOpenIcon />
+                Правила пользования абонементом
+              </h2>
+              <button
+                onClick={() => setIsRulesModalOpen(false)}
+                className="text-purple-200 hover:text-white transition-colors"
+              >
+                <XIcon />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {rules.map((rule, idx) => (
+                <div key={idx} className="bg-purple-800/30 rounded-xl p-6 border border-purple-500/20">
+                  <h3 className="text-lg font-bold text-white mb-4">
+                    {rule.title}
+                  </h3>
+                  <div className="space-y-3">
+                    {rule.content.map((paragraph, pIdx) => (
+                      <p key={pIdx} className="text-purple-200/90 text-sm leading-relaxed">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div className="sticky bottom-0 bg-purple-900/95 backdrop-blur-xl border-t border-purple-500/30 px-6 py-4">
+              <Button
+                variant="default"
+                className="w-full"
+                onClick={() => setIsRulesModalOpen(false)}
+              >
+                Понятно
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </BeamsBackground>
   )
 }
