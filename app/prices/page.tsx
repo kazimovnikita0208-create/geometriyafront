@@ -54,6 +54,19 @@ const PhoneIcon = () => (
   </svg>
 )
 
+const MapPinIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+)
+
+const ListIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+  </svg>
+)
+
 // Абонементы с детальной информацией
 const subscriptionCategories = [
   {
@@ -140,10 +153,14 @@ export default function PricesPage() {
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false)
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [selectedCategoryData, setSelectedCategoryData] = useState<any>(null)
+  const [selectedLessons, setSelectedLessons] = useState<string>('')
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    phone: ''
+    phone: '',
+    address: '',
+    lessons: ''
   })
 
   const handleBookingSubmit = (e: React.FormEvent) => {
@@ -152,9 +169,23 @@ export default function PricesPage() {
     console.log('Booking data:', { ...formData, category: selectedCategory })
     // Закрываем модальное окно и очищаем форму
     setIsBookingModalOpen(false)
-    setFormData({ firstName: '', lastName: '', phone: '' })
+    setFormData({ firstName: '', lastName: '', phone: '', address: '', lessons: '' })
+    setSelectedLessons('')
     // Можно добавить уведомление об успешной отправке
     alert('Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.')
+  }
+
+  const openBookingModal = (category: any, lessons?: string) => {
+    setSelectedCategory(category.title)
+    setSelectedCategoryData(category)
+    if (lessons) {
+      setSelectedLessons(lessons)
+      setFormData(prev => ({ ...prev, lessons }))
+    } else {
+      setSelectedLessons('')
+      setFormData(prev => ({ ...prev, lessons: '' }))
+    }
+    setIsBookingModalOpen(true)
   }
 
   return (
@@ -221,7 +252,8 @@ export default function PricesPage() {
                   {category.subscriptions.map((sub, idx) => (
                     <div 
                       key={idx}
-                      className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 rounded-xl bg-purple-800/30 border border-purple-500/10 hover:border-purple-400/30 transition-colors"
+                      onClick={() => openBookingModal(category, sub.lessons)}
+                      className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 rounded-xl bg-purple-800/30 border border-purple-500/10 hover:border-purple-400/50 hover:bg-purple-800/50 transition-all cursor-pointer"
                     >
                       <span className="text-purple-100 text-sm sm:text-base font-medium">
                         {sub.lessons}
@@ -242,12 +274,9 @@ export default function PricesPage() {
                 <Button
                   variant={category.popular ? "default" : "secondary"}
                   className="w-full"
-                  onClick={() => {
-                    setSelectedCategory(category.title)
-                    setIsBookingModalOpen(true)
-                  }}
+                  onClick={() => openBookingModal(category)}
                 >
-                  Выбрать абонемент
+                  Начать заниматься
                 </Button>
               </div>
             ))}
@@ -454,6 +483,55 @@ export default function PricesPage() {
                     className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                     placeholder="+7 (___) ___-__-__"
                   />
+                </div>
+              </div>
+
+              {/* Адрес студии */}
+              <div>
+                <label htmlFor="address" className="block text-sm font-medium text-purple-200 mb-2">
+                  Адрес студии <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-300">
+                    <MapPinIcon />
+                  </div>
+                  <select
+                    id="address"
+                    required
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all appearance-none"
+                  >
+                    <option value="" className="bg-purple-900">Выберите адрес</option>
+                    <option value="Адрес 1" className="bg-purple-900">Адрес студии 1</option>
+                    <option value="Адрес 2" className="bg-purple-900">Адрес студии 2</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Количество занятий */}
+              <div>
+                <label htmlFor="lessons" className="block text-sm font-medium text-purple-200 mb-2">
+                  Количество занятий <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-300">
+                    <ListIcon />
+                  </div>
+                  <select
+                    id="lessons"
+                    required
+                    value={formData.lessons}
+                    onChange={(e) => setFormData({ ...formData, lessons: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all appearance-none"
+                  >
+                    <option value="" className="bg-purple-900">Выберите количество занятий</option>
+                    {selectedCategoryData?.subscriptions.map((sub: any, idx: number) => (
+                      <option key={idx} value={sub.lessons} className="bg-purple-900">
+                        {sub.lessons} - {sub.price} ₽
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
