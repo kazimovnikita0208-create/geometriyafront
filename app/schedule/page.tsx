@@ -118,22 +118,22 @@ export default function SchedulePage() {
         
         {/* Header */}
         <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
-          <div className="px-4 sm:px-6 py-4">
-            <div className="flex items-center gap-4">
+          <div className="px-3 sm:px-6 py-3 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => router.back()}
-                className="gap-2"
+                className="gap-1 sm:gap-2 px-2 sm:px-3"
               >
                 <ChevronLeftIcon />
                 <span className="hidden sm:inline">Назад</span>
               </Button>
               <div className="flex-1">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white">
                   Запись на занятия
                 </h1>
-                <p className="text-xs sm:text-sm text-purple-200/70 mt-1">
+                <p className="text-xs text-purple-200/70 mt-0.5 sm:mt-1 hidden sm:block">
                   Выберите направление и параметры
                 </p>
               </div>
@@ -142,31 +142,31 @@ export default function SchedulePage() {
         </div>
 
         {/* Content */}
-        <div className="px-4 sm:px-6 py-6">
+        <div className="px-3 sm:px-6 py-4 sm:py-6">
           
           {/* Список всех направлений */}
-          <div className="space-y-6">
+          <div className="space-y-2.5 sm:space-y-6">
             {directions.map((direction) => (
               <div
                 key={direction.id}
-                className="bg-purple-900/40 backdrop-blur-xl rounded-xl border border-purple-500/20 p-4 sm:p-6 hover:border-purple-400/40 transition-colors"
+                className="bg-purple-900/40 backdrop-blur-xl rounded-lg sm:rounded-xl border border-purple-500/20 p-3 sm:p-6 hover:border-purple-400/40 transition-colors"
               >
                 {/* Header */}
-                <div className="mb-4">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                <div className="mb-2 sm:mb-4">
+                  <h3 className="text-base sm:text-2xl font-bold text-white mb-1">
                     {direction.name}
                   </h3>
-                  <p className="text-purple-200/80 text-sm sm:text-base">
+                  <p className="text-purple-200/80 text-xs sm:text-base leading-snug">
                     {direction.description}
                   </p>
                 </div>
 
                 {/* Селекты - встроенные фильтры */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2.5 sm:mb-4">
                   {/* Тренер */}
                   <div>
-                    <label className="block text-sm font-medium text-purple-200 mb-2">
-                      <div className="flex items-center gap-2">
+                    <label className="block text-xs sm:text-sm font-medium text-purple-200 mb-1 sm:mb-2">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         <UsersIcon />
                         Тренер
                       </div>
@@ -174,7 +174,7 @@ export default function SchedulePage() {
                     <select
                       value={directionSelections[direction.id]?.trainer || ''}
                       onChange={(e) => updateDirectionSelection(direction.id, 'trainer', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg bg-purple-800/30 border border-purple-500/20 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
+                      className="w-full px-2.5 py-1.5 sm:px-4 sm:py-3 rounded-lg bg-purple-800/30 border border-purple-500/20 text-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
                     >
                       <option value="" className="bg-purple-900">Выберите тренера</option>
                       {direction.trainers.map((trainer, idx) => (
@@ -187,8 +187,8 @@ export default function SchedulePage() {
 
                   {/* Зал */}
                   <div>
-                    <label className="block text-sm font-medium text-purple-200 mb-2">
-                      <div className="flex items-center gap-2">
+                    <label className="block text-xs sm:text-sm font-medium text-purple-200 mb-1 sm:mb-2">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         <MapPinIcon />
                         Адрес студии
                       </div>
@@ -196,7 +196,7 @@ export default function SchedulePage() {
                     <select
                       value={directionSelections[direction.id]?.hall || ''}
                       onChange={(e) => updateDirectionSelection(direction.id, 'hall', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg bg-purple-800/30 border border-purple-500/20 text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
+                      className="w-full px-2.5 py-1.5 sm:px-4 sm:py-3 rounded-lg bg-purple-800/30 border border-purple-500/20 text-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 appearance-none"
                     >
                       <option value="" className="bg-purple-900">Выберите адрес</option>
                       {direction.halls.map((hall, idx) => (
@@ -211,7 +211,7 @@ export default function SchedulePage() {
                 {/* Кнопка записаться */}
                 <Button
                   variant="default"
-                  className="w-full"
+                  className="w-full text-xs sm:text-base py-2 sm:py-3"
                   onClick={() => openScheduleModal(direction)}
                 >
                   Записаться на занятие

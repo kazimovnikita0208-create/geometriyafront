@@ -194,23 +194,23 @@ export default function PricesPage() {
         
         {/* Header */}
         <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex items-center gap-4">
+          <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => router.back()}
-                className="gap-2"
+                className="gap-1 sm:gap-2 px-2 sm:px-3"
               >
                 <ChevronLeftIcon />
-                <span>Назад</span>
+                <span className="hidden sm:inline">Назад</span>
               </Button>
               <div className="flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold text-white">
-                  Цены и абонементы
+                <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white">
+                  Абонементы
                 </h1>
-                <p className="text-sm text-purple-200/70 mt-1">
-                  Выберите подходящий вариант
+                <p className="text-xs text-purple-200/70 mt-0.5 sm:mt-1 hidden sm:block">
+                  Выберите подходящий тариф
                 </p>
               </div>
             </div>
@@ -218,19 +218,19 @@ export default function PricesPage() {
         </div>
 
         {/* Content */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8">
           
           {/* Абонементы по категориям */}
-          <div className="space-y-8 mb-12">
+          <div className="space-y-4 sm:space-y-8 mb-8 sm:mb-12">
             {subscriptionCategories.map((category) => (
               <div
                 key={category.id}
-                className="bg-purple-900/40 backdrop-blur-xl rounded-2xl border border-purple-500/20 p-4 sm:p-6 md:p-8 hover:border-purple-400/40 transition-colors relative"
+                className="bg-purple-900/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-purple-500/20 p-3 sm:p-6 md:p-8 hover:border-purple-400/40 transition-colors relative"
               >
                 {/* Badge */}
                 {category.badge && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs font-bold border border-purple-400/50 shadow-lg">
+                  <div className="absolute -top-2 sm:-top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 text-white text-xs font-bold border border-purple-400/50 shadow-lg">
                       <SparklesIcon />
                       {category.badge}
                     </span>
@@ -238,27 +238,27 @@ export default function PricesPage() {
                 )}
 
                 {/* Заголовок категории */}
-                <div className="text-center mb-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                <div className="text-center mb-4 sm:mb-6 mt-2 sm:mt-0">
+                  <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3">
                     {category.title}
                   </h2>
-                  <p className="text-purple-200/80 text-sm sm:text-base max-w-2xl mx-auto">
+                  <p className="text-purple-200/80 text-xs sm:text-base max-w-2xl mx-auto">
                     {category.subtitle}
                   </p>
                 </div>
 
                 {/* Таблица цен */}
-                <div className="space-y-3 mb-6">
+                <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                   {category.subscriptions.map((sub, idx) => (
                     <div 
                       key={idx}
                       onClick={() => openBookingModal(category, sub.lessons)}
-                      className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 rounded-xl bg-purple-800/30 border border-purple-500/10 hover:border-purple-400/50 hover:bg-purple-800/50 transition-all cursor-pointer"
+                      className="flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-4 rounded-lg sm:rounded-xl bg-purple-800/30 border border-purple-500/10 hover:border-purple-400/50 hover:bg-purple-800/50 transition-all cursor-pointer active:scale-[0.98]"
                     >
-                      <span className="text-purple-100 text-sm sm:text-base font-medium">
+                      <span className="text-purple-100 text-xs sm:text-base font-medium">
                         {sub.lessons}
                       </span>
-                      <span className="text-white text-lg sm:text-xl font-bold">
+                      <span className="text-white text-base sm:text-xl font-bold">
                         {sub.price} ₽
                       </span>
                     </div>
@@ -266,14 +266,14 @@ export default function PricesPage() {
                 </div>
 
                 {/* Дополнительная информация */}
-                <div className="text-center text-xs sm:text-sm text-purple-200/60 mb-4">
+                <div className="text-center text-xs text-purple-200/60 mb-3 sm:mb-4">
                   Срок действия абонемента — 1 месяц
                 </div>
 
                 {/* Action */}
                 <Button
                   variant={category.popular ? "default" : "secondary"}
-                  className="w-full"
+                  className="w-full text-sm sm:text-base py-2.5 sm:py-3"
                   onClick={() => openBookingModal(category)}
                 >
                   Начать заниматься

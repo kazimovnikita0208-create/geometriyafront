@@ -101,22 +101,22 @@ export default function DirectionsPage() {
         
         {/* Header - Адаптивный */}
         <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-xl border-b border-purple-500/20">
-          <div className="px-4 sm:px-6 py-4">
-            <div className="flex items-center gap-4">
+          <div className="px-3 sm:px-6 py-3 sm:py-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => router.back()}
-                className="gap-2"
+                className="gap-1 sm:gap-2 px-2 sm:px-3"
               >
                 <ChevronLeftIcon />
                 <span className="hidden sm:inline">Назад</span>
               </Button>
               <div className="flex-1">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white">
                   Наши направления
                 </h1>
-                <p className="text-xs sm:text-sm text-purple-200/70 mt-1">
+                <p className="text-xs text-purple-200/70 mt-0.5 sm:mt-1 hidden sm:block">
                   Найдите то, что подходит именно вам
                 </p>
               </div>
@@ -125,43 +125,43 @@ export default function DirectionsPage() {
         </div>
 
         {/* Content */}
-        <div className="px-4 sm:px-6 py-6">
+        <div className="px-3 sm:px-6 py-4 sm:py-6">
           
           {/* Направления - Адаптивные карточки */}
-          <div className="space-y-6 mb-12">
+          <div className="space-y-2.5 sm:space-y-6 mb-6 sm:mb-12">
             {directions.map((direction) => (
               <div
                 key={direction.id}
-                className="bg-purple-900/40 backdrop-blur-xl rounded-xl border border-purple-500/20 p-6 sm:p-8 hover:border-purple-400/40 transition-colors"
+                className="bg-purple-900/40 backdrop-blur-xl rounded-lg sm:rounded-xl border border-purple-500/20 p-3 sm:p-8 hover:border-purple-400/40 transition-colors"
               >
                 {/* Header - Адаптивный */}
-                <div className="mb-4">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                <div className="mb-2 sm:mb-4">
+                  <h2 className="text-base sm:text-3xl font-bold text-white mb-1">
                     {direction.name}
                   </h2>
-                  <p className="text-purple-300 text-sm sm:text-base font-medium">
+                  <p className="text-purple-300 text-xs sm:text-base font-medium">
                     {direction.tagline}
                   </p>
                 </div>
 
                 {/* Description - Адаптивный размер */}
-                <p className="text-purple-200/80 text-sm sm:text-base leading-relaxed mb-6">
+                <p className="text-purple-200/80 text-xs sm:text-base leading-relaxed mb-3 sm:mb-6">
                   {direction.description}
                 </p>
 
                 {/* Features & Levels - Адаптивная сетка */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 mb-3 sm:mb-6">
                   {/* Features */}
                   <div>
-                    <h3 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2">
+                    <h3 className="text-xs sm:text-sm font-semibold text-purple-300 mb-1.5 sm:mb-3 flex items-center gap-1 sm:gap-2">
                       <SparklesIcon />
                       Особенности
                     </h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1 sm:space-y-2">
                       {direction.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-purple-200/80 text-sm">
+                        <li key={idx} className="flex items-start gap-1 sm:gap-2 text-purple-200/80 text-xs sm:text-sm">
                           <CheckIcon />
-                          <span>{feature}</span>
+                          <span className="leading-snug">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -169,14 +169,14 @@ export default function DirectionsPage() {
 
                   {/* Levels */}
                   <div>
-                    <h3 className="text-sm font-semibold text-purple-300 mb-3">
+                    <h3 className="text-xs sm:text-sm font-semibold text-purple-300 mb-1.5 sm:mb-3">
                       Уровни подготовки
                     </h3>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {direction.levels.map((level, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1.5 rounded-full bg-purple-500/20 text-purple-200 text-sm font-medium border border-purple-400/20"
+                          className="px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-purple-500/20 text-purple-200 text-xs sm:text-sm font-medium border border-purple-400/20"
                         >
                           {level}
                         </span>
@@ -186,15 +186,15 @@ export default function DirectionsPage() {
                 </div>
 
                 {/* Actions - Адаптивные кнопки в 2 колонки */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   <Button
                     variant="default"
-                    className="w-full"
+                    className="w-full text-xs sm:text-base py-2 sm:py-3"
                     onClick={() => router.push('/schedule')}
                   >
                     Записаться на занятие
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full text-xs sm:text-base py-2 sm:py-3">
                     Подробнее
                   </Button>
                 </div>

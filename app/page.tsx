@@ -7,25 +7,25 @@ import { Button } from '@/components/ui/button'
 
 // Вынесли иконки наружу - создаются один раз
 const CalendarIcon = () => (
-  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
   </svg>
 )
 
 const BoltIcon = () => (
-  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
   </svg>
 )
 
 const DollarIcon = () => (
-  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 )
 
 const UserIcon = () => (
-  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   </svg>
 )
@@ -85,32 +85,32 @@ export default function Home() {
       <main className="min-h-screen relative flex flex-col">
         
         {/* Hero Section - Responsive для всех устройств */}
-        <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex-1 flex items-center justify-center px-3 sm:px-6 py-4 sm:py-12">
           <div className="max-w-4xl w-full">
             
             {/* Main Content */}
-            <div className="text-center space-y-6">
+            <div className="text-center space-y-4 sm:space-y-6">
               
               {/* Logo Area */}
-              <div className="relative w-full flex flex-col items-center space-y-6">
+              <div className="relative w-full flex flex-col items-center space-y-3 sm:space-y-6">
                 {/* Сам логотип - адаптивный размер */}
                 <img 
                   src="/logo.svg" 
                   alt="Геометрия" 
-                  className="w-24 h-24 sm:w-32 sm:h-32 object-contain"
+                  className="w-20 h-20 sm:w-32 sm:h-32 object-contain"
                   style={{
                     filter: 'brightness(0) invert(1)'
                   }}
                 />
 
                 {/* Subtitle - адаптивный размер */}
-                <p className="text-base sm:text-lg text-purple-200 font-light tracking-wide">
+                <p className="text-sm sm:text-lg text-purple-200 font-light tracking-wide">
                   Студия растяжки и фитнеса на пилоне
                 </p>
               </div>
 
               {/* Menu Grid - Responsive: 1 колонка на мобильных, 2 на больших экранах */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 mt-6 sm:mt-8">
                 {MENU_ITEMS.map((item) => {
                   const Icon = item.Icon
                   return (
@@ -118,20 +118,20 @@ export default function Home() {
                       key={item.path}
                       onClick={() => handleNavigate(item.path)}
                       variant="secondary"
-                      className="h-auto min-h-[100px] sm:min-h-[140px] rounded-xl w-full"
+                      className="h-auto min-h-[90px] sm:min-h-[140px] rounded-lg sm:rounded-xl w-full"
                     >
-                      <div className="flex flex-col items-center justify-center text-center p-4 sm:p-6 w-full">
+                      <div className="flex flex-col items-center justify-center text-center p-3 sm:p-6 w-full">
                         {/* Icon - сверху */}
-                        <div className="text-white mb-3">
+                        <div className="text-white mb-2 sm:mb-3">
                           <Icon />
                         </div>
                         
                         {/* Content - снизу */}
                         <div>
-                          <h3 className="text-base sm:text-lg font-bold text-white mb-1">
+                          <h3 className="text-sm sm:text-lg font-bold text-white mb-0.5 sm:mb-1">
                             {item.title}
                           </h3>
-                          <p className="text-xs sm:text-sm text-white/70">
+                          <p className="text-xs text-white/70">
                             {item.description}
                           </p>
                         </div>
