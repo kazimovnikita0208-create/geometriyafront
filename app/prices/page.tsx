@@ -42,6 +42,18 @@ const BookOpenIcon = () => (
   </svg>
 )
 
+const UserIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+)
+
+const PhoneIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+)
+
 // Абонементы с детальной информацией
 const subscriptionCategories = [
   {
@@ -126,6 +138,24 @@ const rules = [
 export default function PricesPage() {
   const router = useRouter()
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false)
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: ''
+  })
+
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Здесь будет логика отправки данных
+    console.log('Booking data:', { ...formData, category: selectedCategory })
+    // Закрываем модальное окно и очищаем форму
+    setIsBookingModalOpen(false)
+    setFormData({ firstName: '', lastName: '', phone: '' })
+    // Можно добавить уведомление об успешной отправке
+    alert('Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.')
+  }
 
   return (
     <BeamsBackground intensity="medium">
@@ -212,7 +242,10 @@ export default function PricesPage() {
                 <Button
                   variant={category.popular ? "default" : "secondary"}
                   className="w-full"
-                  onClick={() => router.push('/schedule')}
+                  onClick={() => {
+                    setSelectedCategory(category.title)
+                    setIsBookingModalOpen(true)
+                  }}
                 >
                   Выбрать абонемент
                 </Button>
@@ -326,6 +359,123 @@ export default function PricesPage() {
                 Понятно
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно бронирования абонемента */}
+      {isBookingModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setIsBookingModalOpen(false)}
+        >
+          <div 
+            className="bg-purple-900/95 backdrop-blur-xl rounded-2xl border border-purple-500/30 max-w-md w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="bg-purple-900/95 backdrop-blur-xl border-b border-purple-500/30 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+              <h2 className="text-xl font-bold text-white">
+                Бронирование абонемента
+              </h2>
+              <button
+                onClick={() => setIsBookingModalOpen(false)}
+                className="text-purple-200 hover:text-white transition-colors"
+              >
+                <XIcon />
+              </button>
+            </div>
+
+            {/* Content */}
+            <form onSubmit={handleBookingSubmit} className="p-6 space-y-4">
+              {/* Выбранная категория */}
+              <div className="bg-purple-800/30 rounded-lg p-4 border border-purple-500/20">
+                <p className="text-sm text-purple-200/70 mb-1">Выбранный тариф:</p>
+                <p className="text-lg font-bold text-white">{selectedCategory}</p>
+              </div>
+
+              {/* Имя */}
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-purple-200 mb-2">
+                  Имя <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-300">
+                    <UserIcon />
+                  </div>
+                  <input
+                    type="text"
+                    id="firstName"
+                    required
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                    placeholder="Введите ваше имя"
+                  />
+                </div>
+              </div>
+
+              {/* Фамилия */}
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-purple-200 mb-2">
+                  Фамилия <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-300">
+                    <UserIcon />
+                  </div>
+                  <input
+                    type="text"
+                    id="lastName"
+                    required
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                    placeholder="Введите вашу фамилию"
+                  />
+                </div>
+              </div>
+
+              {/* Номер телефона */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-purple-200 mb-2">
+                  Номер телефона <span className="text-red-400">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-300">
+                    <PhoneIcon />
+                  </div>
+                  <input
+                    type="tel"
+                    id="phone"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full pl-10 pr-4 py-3 bg-purple-800/30 border border-purple-500/20 rounded-lg text-white placeholder-purple-300/50 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                    placeholder="+7 (___) ___-__-__"
+                  />
+                </div>
+              </div>
+
+              {/* Кнопки */}
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setIsBookingModalOpen(false)}
+                >
+                  Отмена
+                </Button>
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="flex-1"
+                >
+                  Отправить заявку
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       )}
