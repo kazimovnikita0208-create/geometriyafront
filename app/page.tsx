@@ -105,7 +105,7 @@ export default function Home() {
 
                 {/* Subtitle - адаптивный размер */}
                 <p className="text-base sm:text-lg text-purple-200 font-light tracking-wide">
-                  Студия танцев и растяжки на пилоне
+                  Студия растяжки и фитнеса на пилоне
                 </p>
               </div>
 
