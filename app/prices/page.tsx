@@ -214,7 +214,7 @@ export default function PricesPage() {
                   className="w-full"
                   onClick={() => router.push('/schedule')}
                 >
-                  Купить абонемент
+                  Выбрать абонемент
                 </Button>
               </div>
             ))}
