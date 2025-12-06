@@ -65,6 +65,9 @@ async function handleRequest(
     const path = params.path ? `/${params.path.join('/')}` : '';
     const url = `${backendUrl}${path}`;
     
+    // Логируем для отладки
+    console.log(`🔵 Proxy: ${method} ${path} → ${url}`);
+    
     // Получаем query параметры из оригинального запроса
     const searchParams = request.nextUrl.searchParams.toString();
     const fullUrl = searchParams ? `${url}?${searchParams}` : url;
@@ -88,6 +91,15 @@ async function handleRequest(
     const authHeader = request.headers.get('Authorization');
     if (authHeader) {
       headers['Authorization'] = authHeader;
+      console.log(`🔑 Proxy: Authorization header found`);
+    } else {
+      console.log(`⚠️ Proxy: No Authorization header found`);
+    }
+    
+    // Также проверяем cookie (на случай, если токен там)
+    const cookies = request.headers.get('cookie');
+    if (cookies) {
+      headers['Cookie'] = cookies;
     }
     
     // Делаем запрос к backend
@@ -98,7 +110,18 @@ async function handleRequest(
     });
     
     // Получаем данные из ответа
-    const data = await response.json().catch(() => ({}));
+    let data: any;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = {};
+    }
+    
+    // Логируем ответ для отладки
+    if (!response.ok) {
+      console.log(`❌ Proxy error: ${response.status} ${response.statusText}`, data);
+    }
     
     // Возвращаем ответ с правильными заголовками
     return NextResponse.json(data, {
