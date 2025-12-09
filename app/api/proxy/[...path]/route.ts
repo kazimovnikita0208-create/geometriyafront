@@ -59,7 +59,25 @@ async function handleRequest(
 ) {
   try {
     // Получаем URL backend из переменных окружения
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    // В server-side коде можно использовать как NEXT_PUBLIC_, так и обычные переменные
+    let backendUrl = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:3001';
+    
+    // КРИТИЧЕСКАЯ ПРОВЕРКА: Если URL не установлен, возвращаем ошибку
+    if (!backendUrl || backendUrl === 'http://localhost:3001') {
+      console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: NEXT_PUBLIC_API_URL не установлен!');
+      console.error('📋 Доступные переменные окружения:', Object.keys(process.env).filter(key => key.includes('API') || key.includes('URL')));
+      return NextResponse.json(
+        { 
+          error: 'Backend URL not configured', 
+          message: 'NEXT_PUBLIC_API_URL environment variable is not set. Please configure it in Vercel Dashboard.',
+          hint: 'Set NEXT_PUBLIC_API_URL to your backend Vercel URL (e.g., https://geometriyafinal-backend-xxx.vercel.app)'
+        },
+        { status: 500 }
+      );
+    }
+    
+    // Убираем завершающий слэш из backendUrl
+    backendUrl = backendUrl.endsWith('/') ? backendUrl.slice(0, -1) : backendUrl;
     
     // Собираем путь к API endpoint
     const path = params.path ? `/${params.path.join('/')}` : '';
@@ -68,6 +86,7 @@ async function handleRequest(
     // Логируем для отладки
     console.log(`🔵 Proxy: ${method} ${path} → ${url}`);
     console.log(`📋 Proxy: Backend URL: ${backendUrl}`);
+    console.log(`📋 Proxy: Full URL: ${url}`);
     
     // Получаем query параметры из оригинального запроса
     const searchParams = request.nextUrl.searchParams.toString();
@@ -92,9 +111,10 @@ async function handleRequest(
     const authHeader = request.headers.get('Authorization');
     if (authHeader) {
       headers['Authorization'] = authHeader;
-      console.log(`🔑 Proxy: Authorization header found`);
+      console.log(`🔑 Proxy: Authorization header found: ${authHeader.substring(0, 30)}...`);
     } else {
       console.log(`⚠️ Proxy: No Authorization header found`);
+      console.log(`📋 Proxy: All request headers:`, Object.fromEntries(request.headers.entries()));
     }
     
     // Также проверяем cookie (на случай, если токен там)
@@ -104,11 +124,28 @@ async function handleRequest(
     }
     
     // Делаем запрос к backend
-    const response = await fetch(fullUrl, {
-      method,
-      headers,
-      body: body || undefined,
-    });
+    console.log(`🚀 Proxy: Making ${method} request to: ${fullUrl}`);
+    console.log(`📋 Proxy: Request headers:`, Object.keys(headers));
+    
+    let response: Response;
+    try {
+      response = await fetch(fullUrl, {
+        method,
+        headers,
+        body: body || undefined,
+      });
+      console.log(`✅ Proxy: Response received: ${response.status} ${response.statusText}`);
+    } catch (fetchError) {
+      console.error('❌ Proxy: Fetch error:', fetchError);
+      return NextResponse.json(
+        { 
+          error: 'Backend connection failed', 
+          message: fetchError instanceof Error ? fetchError.message : 'Unknown error',
+          url: fullUrl
+        },
+        { status: 502 }
+      );
+    }
     
     // Получаем данные из ответа
     let data: any;
