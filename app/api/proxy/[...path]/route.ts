@@ -67,6 +67,7 @@ async function handleRequest(
     
     // Логируем для отладки
     console.log(`🔵 Proxy: ${method} ${path} → ${url}`);
+    console.log(`📋 Proxy: Backend URL: ${backendUrl}`);
     
     // Получаем query параметры из оригинального запроса
     const searchParams = request.nextUrl.searchParams.toString();
