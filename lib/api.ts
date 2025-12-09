@@ -1,8 +1,10 @@
 // API Configuration
 // Используем прокси для обхода CORS
-// В production используем Next.js API route как прокси
+// В production всегда используем Next.js API route как прокси
 // В development можно использовать прямой URL к backend
-const USE_PROXY = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+const isDevelopment = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const USE_PROXY = !isDevelopment; // Всегда используем прокси в production
 const API_URL = USE_PROXY 
   ? '/api/proxy' // Используем прокси в production
   : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'); // Прямой URL в development
@@ -50,12 +52,30 @@ class ApiClient {
     // Добавляем токен если он есть
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
+      console.log(`🔍 API Client: Checking token for ${endpoint}`, {
+        hasToken: !!token,
+        tokenLength: token?.length,
+        tokenPreview: token ? `${token.substring(0, 20)}...` : 'null'
+      });
+      
       if (token) {
         config.headers = {
           ...config.headers,
           Authorization: `Bearer ${token}`,
         };
+        console.log(`🔑 API Client: Token added to request for ${endpoint}`, {
+          headerValue: `Bearer ${token.substring(0, 20)}...`
+        });
+      } else {
+        console.warn(`⚠️ API Client: No token found for ${endpoint}`);
+        console.warn(`⚠️ API Client: localStorage contents:`, {
+          token: localStorage.getItem('token'),
+          user: localStorage.getItem('user'),
+          allKeys: Object.keys(localStorage)
+        });
       }
+    } else {
+      console.warn(`⚠️ API Client: window is undefined (SSR), cannot get token`);
     }
 
     try {
